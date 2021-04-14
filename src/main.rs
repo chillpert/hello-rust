@@ -20,6 +20,9 @@ fn main() {
     // 257 -> 1
     // Relying on this behaviour is considered an error
 
+    // auto format project (just like with Clang Format) using
+    // $ cargo fmt
+
     // _ (underscore) in front of variable name will supress warning that the variable is not used
 
     // bool
@@ -152,6 +155,9 @@ fn main() {
     {
         // evaluations vs. expressions
         function_a();
+        function_b(420, 1337);
+        println!("Function c: {}", function_c());
+        function_d(419);
     }
 
     // const
@@ -162,7 +168,7 @@ fn main() {
         // the main difference between normal variables is that they can
         // only be assigned constant expressions and not the output of a function
         // or anything else that is calculated during runtime
-        const _MAX_POINT: u32 = 100_00;
+        const _MAX_POINT: u32 = 100_000;
     }
 
     // shadowing
@@ -182,6 +188,86 @@ fn main() {
         let _spaces = "   ";
         let _spaces = _spaces.len();
     }
+
+    // control structures
+    {
+        // IF - ELSE - ELSE IF
+        let _number = 3;
+
+        // not paranthesis are allowed but will trigger a warning
+        if _number < 5 && _number >= 0 {
+            println!("number smaller 5");
+        } else if _number == 5 {
+            println!("number equals 5");
+        } else {
+            println!("number greater 5");
+        }
+
+        let condition = true;
+        let _number = if condition { 5 } else { 6 };
+
+        // LOOPS
+        {
+            // endless loop (except for I break it directly)
+            {
+                loop {
+                    break;
+                }
+            }
+
+            // returning values from loops
+            {
+                let mut counter = 0;
+
+                let _result = loop {
+                    counter += 1;
+
+                    if counter == 10 {
+                        break counter * 2;
+                    }
+                };
+            }
+
+            // while
+            {
+                let a = [10, 20, 30, 40, 50];
+                let mut index = 0;
+
+                while index < 5 {
+                    println!("the value is: {}", a[index]);
+
+                    index += 1;
+                }
+            }
+
+            // for (range approach)
+            {
+                // 1,2,3
+                for number in 1..4 {
+                    println!("{}!", number);
+                }
+
+                // 3,2,1
+                for number in (1..4).rev() {
+                    println!("{}!", number);
+                }
+            }
+
+            // for (iterator approach)
+            {
+                let a = [10, 20, 30, 40, 50];
+
+                for element in a.iter() {
+                    println!("the value is: {}", element);
+                }
+            }
+        }
+    }
+
+    // strings
+    {
+        let _s = String::from("hello");
+    }
 }
 
 fn function_a() {
@@ -195,4 +281,18 @@ fn function_a() {
     };
 
     println!("Result: {}", _y);
+}
+
+fn function_b(x: i32, y: i32) {
+    println!("The value of x is: {}", x);
+    println!("The value of y is: {}", y);
+}
+
+fn function_c() -> i32 {
+    5
+}
+
+fn function_d(x: i32) -> i32 {
+    x + 1 // this is an epxression (no semicolon)
+          //x + 1; // this is a statement and not valid (expected i32 but found () )
 }
